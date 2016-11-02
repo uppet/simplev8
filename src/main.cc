@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include <ios>
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -30,6 +31,10 @@ Handle<Value> InvokePrint(const Arguments& args) {
 Handle<Value> InvokeRead(const Arguments& args) {
     std::string line;
     std::cin>>line;
+    if (std::cin.rdstate()  & std::ifstream::eofbit) {
+        line = "eof";
+        ThrowException(String::New("Exception eof"));
+    }
     return String::New(line.c_str());
 }
 
