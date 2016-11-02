@@ -27,10 +27,6 @@
 
 // Platform specific code for Linux goes here
 
-#undef __x86_64__
-#define __USE_GNU
-#include <i386-linux-gnu/sys/ucontext.h>
-
 #include <pthread.h>
 #include <semaphore.h>
 #include <signal.h>
