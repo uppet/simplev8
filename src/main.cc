@@ -60,9 +60,10 @@ int main(int argc, char **argv) {
     ctx->Global()->Set(String::New("print"), tPrint->GetFunction());
     ctx->Global()->Set(String::New("readline"), tRead->GetFunction());
 
+    ScriptOrigin source_origin(String::New(argv[1]));
     Local<String> source= String::New(str.c_str());
 
-    Local<Script> script = Script::Compile(source);
+    Local<Script> script = Script::Compile(source, &source_origin);
     script->Run();
     return 0;
 }
