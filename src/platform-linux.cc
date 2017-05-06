@@ -130,9 +130,22 @@ void OS::Print(const char* format, ...) {
   va_end(args);
 }
 
+static FILE *tmp_file = NULL;
+
+int init_tmp_file() {
+    tmp_file = fopen("/tmp/tmp_file", "w+");
+    return 1;
+}
+
 
 void OS::VPrint(const char* format, va_list args) {
   vprintf(format, args);
+  static int init_once = init_tmp_file();
+  if (init_once) {
+      vfprintf(tmp_file, format, args);
+      // fprintf(tmp_file, "\n");
+      fflush(tmp_file);
+  }
 }
 
 
