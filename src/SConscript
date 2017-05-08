@@ -370,10 +370,13 @@ def ConfigureBuild():
   empty_snapshot_obj = BuildObject(env, 'snapshot-empty.cc')
   if use_snapshot:
     mksnapshot_src = 'mksnapshot.cc'
-    mksnapshot = env.Program('mksnapshot', [mksnapshot_src, libraries_obj, non_snapshot_files, empty_snapshot_obj], PDB='mksnapshot.exe.pdb')
-    snapshot_cc = env.Snapshot('snapshot.cc', mksnapshot, LOGFILE=File('snapshot.log').abspath)
-    snapshot_obj = BuildObject(env, snapshot_cc, CPPPATH=['.'])
-    libraries_obj = BuildObject(env, libraries_empty_src, CPPPATH=['.'])
+    snapshot_env = env.Copy()
+    snapshot_env.Append(LINKFLAGS = ['-m32'])
+
+    mksnapshot = snapshot_env.Program('mksnapshot', [mksnapshot_src, libraries_obj, non_snapshot_files, empty_snapshot_obj], PDB='mksnapshot.exe.pdb')
+    snapshot_cc = snapshot_env.Snapshot('snapshot.cc', mksnapshot, LOGFILE=File('snapshot.log').abspath)
+    snapshot_obj = BuildObject(snapshot_env, snapshot_cc, CPPPATH=['.'])
+    libraries_obj = BuildObject(snapshot_env, libraries_empty_src, CPPPATH=['.'])
   else:
     snapshot_obj = empty_snapshot_obj
 

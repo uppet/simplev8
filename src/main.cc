@@ -41,7 +41,9 @@ Handle<Value> InvokeRead(const Arguments& args) {
 int main(int argc, char **argv) {
     V8::Initialize();
     HandleScope hscope;
-    Persistent<Context> ctx = Context::New();
+    const char *extensions[] = {"v8/print", "v8/load", "v8/quit"};
+    ExtensionConfiguration cfg(3, extensions);
+    Persistent<Context> ctx = Context::New(&cfg);
     Context::Scope scope(ctx);
 
     if (argc < 2) {
@@ -57,7 +59,7 @@ int main(int argc, char **argv) {
     v8::Local<v8::FunctionTemplate> tPrint = v8::FunctionTemplate::New(InvokePrint);
     v8::Local<v8::FunctionTemplate> tRead = v8::FunctionTemplate::New(InvokeRead);
 
-    ctx->Global()->Set(String::New("print"), tPrint->GetFunction());
+    ctx->Global()->Set(String::New("mdprint"), tPrint->GetFunction());
     ctx->Global()->Set(String::New("readline"), tRead->GetFunction());
 
     ScriptOrigin source_origin(String::New(argv[1]));
