@@ -40,6 +40,9 @@ Handle<Value> InvokeRead(const Arguments& args) {
 
 int main(int argc, char **argv) {
     V8::Initialize();
+    std::string v8flags = "--nolazy";
+    V8::SetFlagsFromString(v8flags.c_str(), v8flags.length());
+    printf("I'm md8 1..\n");
     HandleScope hscope;
     const char *extensions[] = {"v8/print", "v8/load", "v8/quit"};
     ExtensionConfiguration cfg(3, extensions);

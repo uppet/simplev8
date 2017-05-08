@@ -323,6 +323,7 @@ class Ia32CodeGenerator: public CodeGenerator {
 Handle<Code> Ia32CodeGenerator::MakeCode(FunctionLiteral* flit,
                                          Handle<Script> script,
                                          bool is_eval) {
+OS::Print("Making Function: codegen:%d\n", is_eval);
 #ifdef DEBUG
   bool print_source = false;
   bool print_ast = false;
